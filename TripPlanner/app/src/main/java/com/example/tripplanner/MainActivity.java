@@ -8,7 +8,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -75,9 +79,21 @@ public class MainActivity extends Activity {
     /**Called when User clicks button to enter City Name **/
     public void selectCity(View view){
         Intent intent = new Intent(this, DisplayTripAdvisorActivity.class);
-        EditText editText = (EditText) findViewById(R.id.editText);
-        String city = editText.getText().toString();
+        EditText cityEntry = (EditText) findViewById(R.id.editText);
+        String city = cityEntry.getText().toString();
+        city = changeString(city);
         intent.putExtra(EXTRA_CITY, city);
+        System.out.println("OMG" + city);
         startActivity(intent);
+    }
+    public String changeString(String cityString){
+        StringBuilder query = new StringBuilder();
+        try {
+            query.append(URLEncoder.encode(cityString, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        cityString = query.toString().toLowerCase().replace("+","%20");
+        return cityString;
     }
 }
