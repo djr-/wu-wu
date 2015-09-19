@@ -5,12 +5,47 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
+
 public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Create a REST adapter which points to our API
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Api.API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        // Create an instance of our GitHub API interface.
+        GitHub github = retrofit.create(GitHub.class);
+
+        // Create a call instance for looking up contributors.
+        Call<List<Api.Contributor>> call = github.contributors("djr-", "wu-wu");
+
+        call.enqueue(new Callback<List<Api.Contributor>>() {
+            @Override
+            public void onResponse(Response<List<Api.Contributor>> response) {
+                List<Api.Contributor> contributors = response.body();
+                for (Api.Contributor contributor : contributors) {
+                    System.out.println(contributor.login + " (" + contributor.contributions + ")");
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     @Override
