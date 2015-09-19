@@ -35,3 +35,5 @@ proguard/
 gen-external-apklibs
 
 TripPlanner/.idea
+
+TripPlanner/app/src/main/res/values/api_keys.xml
