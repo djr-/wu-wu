@@ -7,9 +7,11 @@ public final class Api {
 
     public static class Geo {
         public final String location_string;
+        public int location_id;
 
-        public Geo(String location_string) {
+        public Geo(String location_string, int location_id) {
             this.location_string = location_string;
+            this.location_id = location_id;
         }
     }
 

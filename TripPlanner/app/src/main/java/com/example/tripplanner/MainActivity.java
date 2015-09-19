@@ -19,7 +19,7 @@ import retrofit.Retrofit;
 
 public class MainActivity extends Activity {
     public final static String EXTRA_CITY = "com.example.tripplanner.CITY";
-
+    int id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        TripAdvisor tripAdvisor = retrofit.create(TripAdvisor.class);
+         TripAdvisor tripAdvisor = retrofit.create(TripAdvisor.class);
 
         String API_KEY = getResources().getString(R.string.TripAdvisorKey);
         Call<Api.SearchResults> call = tripAdvisor.searchGeos("San%20Francisco", API_KEY);
@@ -66,6 +66,7 @@ public class MainActivity extends Activity {
             @Override
             public void onResponse(Response<Api.SearchResults> response) {
                 Api.SearchResults searchResults = response.body();
+                id = searchResults.geos.get(0).location_id;
                 System.out.println(searchResults.geos.get(0).location_string);
             }
 
@@ -78,7 +79,7 @@ public class MainActivity extends Activity {
         EditText cityEntry = (EditText) findViewById(R.id.editText);
         String city = cityEntry.getText().toString();
         city = changeString(city);
-        intent.putExtra(EXTRA_CITY, city);
+        intent.putExtra("id", id);
         System.out.println("OMG" + city);
         startActivity(intent);
     }
