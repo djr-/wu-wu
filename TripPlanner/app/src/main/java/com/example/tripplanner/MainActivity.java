@@ -8,15 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-<<<<<<< HEAD
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-=======
->>>>>>> 4b82059739812c7f778750a80483f2a10769cf61
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -31,29 +25,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Create a REST adapter which points to our API
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Api.API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        TripAdvisor tripAdvisor = retrofit.create(TripAdvisor.class);
-
-        String API_KEY = getResources().getString(R.string.TripAdvisorKey);
-        Call<Api.SearchResults> call = tripAdvisor.searchGeos("San%20Francisco", API_KEY);
-
-        call.enqueue(new Callback<Api.SearchResults>() {
-            @Override
-            public void onResponse(Response<Api.SearchResults> response) {
-                Api.SearchResults searchResults = response.body();
-                System.out.println(searchResults.geos.get(0).location_string);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                t.printStackTrace();
-            }
-        });
     }
 
     @Override
@@ -79,6 +51,29 @@ public class MainActivity extends Activity {
     }
     /**Called when User clicks button to enter City Name **/
     public void selectCity(View view){
+        // Create a REST adapter which points to our API
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Api.API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TripAdvisor tripAdvisor = retrofit.create(TripAdvisor.class);
+
+        String API_KEY = getResources().getString(R.string.TripAdvisorKey);
+        Call<Api.SearchResults> call = tripAdvisor.searchGeos("San%20Francisco", API_KEY);
+
+        call.enqueue(new Callback<Api.SearchResults>() {
+            @Override
+            public void onResponse(Response<Api.SearchResults> response) {
+                Api.SearchResults searchResults = response.body();
+                System.out.println(searchResults.geos.get(0).location_string);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+            }
+        });
         Intent intent = new Intent(this, DisplayTripAdvisorActivity.class);
         EditText cityEntry = (EditText) findViewById(R.id.editText);
         String city = cityEntry.getText().toString();

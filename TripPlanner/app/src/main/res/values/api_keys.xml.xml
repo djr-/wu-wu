@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="TripAdvisorKey">HackTripAdvisor-ade29ff43aed</string>
+  <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
+        AIzaSyAIosEupDRM02WxJ5OioBb0AiKTSeYfGeE
+    </string>
 </resources>
