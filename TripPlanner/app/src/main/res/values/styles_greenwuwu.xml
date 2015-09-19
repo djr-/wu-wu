@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- File created by the Android Action Bar Style Generator
+
+     Copyright (C) 2011 The Android Open Source Project
+     Copyright (C) 2012 readyState Software Ltd
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+  
+          http://www.apache.org/licenses/LICENSE-2.0
+  
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+
+    <style name="Theme.Greenwuwu" parent="@android:style/Theme.Holo">
+        <item name="android:actionBarItemBackground">@drawable/selectable_background_greenwuwu</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.Greenwuwu</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Greenwuwu</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Greenwuwu</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.Greenwuwu</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Greenwuwu</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top_greenwuwu</item>
+        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_greenwuwu</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Greenwuwu</item>
+        
+        
+    </style>
+
+    <style name="ActionBar.Solid.Greenwuwu" parent="@android:style/Widget.Holo.ActionBar.Solid">
+        <item name="android:background">@drawable/ab_solid_greenwuwu</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_greenwuwu</item>
+        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_greenwuwu</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Greenwuwu</item>
+    </style>
+
+    <style name="ActionBar.Transparent.Greenwuwu" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@drawable/ab_transparent_greenwuwu</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Greenwuwu</item>
+    </style>
+
+    <style name="PopupMenu.Greenwuwu" parent="@android:style/Widget.Holo.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_greenwuwu</item>	
+    </style>
+
+    <style name="DropDownListView.Greenwuwu" parent="@android:style/Widget.Holo.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_greenwuwu</item>
+    </style>
+
+    <style name="ActionBarTabStyle.Greenwuwu" parent="@android:style/Widget.Holo.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_indicator_ab_greenwuwu</item>
+    </style>
+
+    <style name="DropDownNav.Greenwuwu" parent="@android:style/Widget.Holo.Spinner">
+        <item name="android:background">@drawable/spinner_background_ab_greenwuwu</item>
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_greenwuwu</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_greenwuwu</item>
+    </style>
+    
+    <style name="ProgressBar.Greenwuwu" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_horizontal_greenwuwu</item>
+    </style>
+    
+    <style name="ActionButton.CloseMode.Greenwuwu" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
+        <item name="android:background">@drawable/btn_cab_done_greenwuwu</item>
+    </style>
+
+    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+    <style name="Theme.Greenwuwu.Widget" parent="@android:style/Theme.Holo">
+        <item name="android:popupMenuStyle">@style/PopupMenu.Greenwuwu</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Greenwuwu</item>
+    </style>
+
+</resources>
