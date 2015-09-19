@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">TripPlanner</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="city_button">Enter</string>
+    <string name="title_activity_display_trip_advisor">Things To Do</string>
 </resources>

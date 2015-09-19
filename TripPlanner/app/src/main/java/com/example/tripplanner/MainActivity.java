@@ -1,12 +1,15 @@
 package com.example.tripplanner;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 public class MainActivity extends Activity {
-
+    public final static String EXTRA_CITY = "com.example.tripplanner.CITY";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,5 +36,13 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    /**Called when User clicks button to enter City Name **/
+    public void selectCity(View view){
+        Intent intent = new Intent(this, DisplayTripAdvisorActivity.class);
+        EditText editText = (EditText) findViewById(R.id.editText);
+        String city = editText.getText().toString();
+        intent.putExtra(EXTRA_CITY, city);
+        startActivity(intent);
     }
 }
