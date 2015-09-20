@@ -22,17 +22,36 @@ import retrofit.Retrofit;
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-
+    double totalTime;
     private void addMarkerToMap(LatLng latLng, String markerName) {
         mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title(markerName));
     }
+    public double calculateTime(String coord1, String coord2){
+        Call<GoogleDistanceMatrixApi.Result> call = distanceMatrix.computeTimeBetween("38.63983,-90.29417", "39.63983,-90.29417", DISTANCE_MATRIX_API_KEY);
 
+        call.enqueue(new Callback<GoogleDistanceMatrixApi.Result>() {
+            @Override
+            public void onResponse(Response<GoogleDistanceMatrixApi.Result> response) {
+                GoogleDistanceMatrixApi.Result result = response.body();
+                System.out.println(result.status);
+                System.out.println(result.origin_addresses);
+                System.out.println(result.destination_addresses);
+                System.out.println(result.rows.get(0).elements.get(0).status);
+                System.out.println(result.rows.get(0).elements.get(0).duration.text);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
     private String trimParens(String stringWithParens) {
         String stringWithoutParens;
         stringWithoutParens = stringWithParens.replace("(", "");
-        stringWithoutParens = stringWithParens.replace(")", "");
+        stringWithoutParens = stringWithoutParens.replace(")", "");
         return stringWithoutParens;
     }
 
@@ -55,7 +74,9 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
-
+        String test = "(FUN, TIMES)";
+        test = trimParens(test);
+        System.out.println("OMGTEST"+test+"HOORAY");
         LatLng firstLatLong = new LatLng(0, 0);
         LatLng secondLatLong = new LatLng(0, 0);
 
@@ -97,24 +118,7 @@ public class MapsActivity extends FragmentActivity {
         String firstTrimmedLatLong = trimParens(firstLatLong.toString());
         String secondTrimmedLatLong = trimParens(secondLatLong.toString());
 
-        Call<GoogleDistanceMatrixApi.Result> call = distanceMatrix.computeTimeBetween("38.63983,-90.29417", "39.63983,-90.29417", DISTANCE_MATRIX_API_KEY);
 
-        call.enqueue(new Callback<GoogleDistanceMatrixApi.Result>() {
-            @Override
-            public void onResponse(Response<GoogleDistanceMatrixApi.Result> response) {
-                GoogleDistanceMatrixApi.Result result = response.body();
-                System.out.println(result.status);
-                System.out.println(result.origin_addresses);
-                System.out.println(result.destination_addresses);
-                System.out.println(result.rows.get(0).elements.get(0).status);
-                System.out.println(result.rows.get(0).elements.get(0).duration.text);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                t.printStackTrace();
-            }
-        });
     }
 
     @Override
