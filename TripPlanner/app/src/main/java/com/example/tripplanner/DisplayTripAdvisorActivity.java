@@ -160,7 +160,7 @@ public class DisplayTripAdvisorActivity extends Activity {
             }
         }
         Intent intent = new Intent(this, MapsActivity.class);
-        //intent.putExtra("tripList", tripList);
+        intent.putExtra("tripList", tripList);
         startActivity(intent);
 
 

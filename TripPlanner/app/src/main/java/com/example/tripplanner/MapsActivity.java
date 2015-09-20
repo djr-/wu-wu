@@ -8,6 +8,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
@@ -29,6 +31,15 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+
+        ArrayList<TripAdvisorApi.Data> tripList = (ArrayList<TripAdvisorApi.Data>)getIntent().getSerializableExtra("tripList");
+        for (int i = 0; i < tripList.size(); ++i){
+            String name = tripList.get(i).name;
+            double longitude = tripList.get(i).longitude;
+            double latitude = tripList.get(i).latitude;
+            addMarkerToMap(new LatLng(latitude,longitude), name);
+        }
+
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GoogleDistanceMatrixApi.API_URL)
