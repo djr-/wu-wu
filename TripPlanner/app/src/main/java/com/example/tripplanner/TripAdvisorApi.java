@@ -31,18 +31,19 @@ public final class TripAdvisorApi {
         public final double latitude;
         public final double longitude;
         public final double rating;
+        public final boolean selected;
         public String toString(){
             return this.name;
         }
 
 
-        public Data(String location_string, int location_id, double latitude, double longitude, double rating, boolean clicked) {
+        public Data(String location_string, int location_id, double latitude, double longitude, double rating) {
             this.name = location_string;
             this.location_id = location_id;
             this.latitude = latitude;
             this.longitude = longitude;
             this.rating = rating;
-            clicked = false;
+            this.selected = false;
 
         }
     }

@@ -29,15 +29,6 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
             TextView textView = (TextView) rowView.findViewById(R.id.label);
             ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
             textView.setText(values[position]);
-
-/*            String s = values[position];
-            if (s.startsWith("Zoo") || s.startsWith("Saloon")
-                    || s.startsWith("Night Club")) {
-                imageView.setImageResource(R.drawable.no);
-            } else {
-                imageView.setImageResource(R.drawable.yes);
-            }*/
-
             return rowView;
         }
     }
