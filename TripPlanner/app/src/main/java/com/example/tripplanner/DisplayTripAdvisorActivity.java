@@ -36,9 +36,9 @@ public class DisplayTripAdvisorActivity extends Activity {
                 .build();
 
         TripAdvisor tripAdvisor = retrofit.create(TripAdvisor.class);
-        intent.getStringExtra("id");
+        String city = intent.getStringExtra("city");
         String API_KEY = getResources().getString(R.string.TripAdvisorKey);
-        Call<TripAdvisorApi.SearchResults> call = tripAdvisor.searchGeos("San%20Francisco", API_KEY);
+        Call<TripAdvisorApi.SearchResults> call = tripAdvisor.searchGeos(city, API_KEY);
         mainTextView = (TextView) findViewById(R.id.text_test);
         call.enqueue(new Callback<TripAdvisorApi.SearchResults>() {
             @Override
