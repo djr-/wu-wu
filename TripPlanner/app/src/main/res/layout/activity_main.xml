@@ -22,7 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="150dp"
-            android:text="@string/home_prompt" />
+            android:text="@string/home_prompt"
+            android:textSize="20sp"/>
 
         <EditText
             android:id="@+id/editText"
@@ -36,6 +37,7 @@
             android:layout_alignParentEnd="false"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/home_prompt"
+            android:inputType="text"
             android:autoText="false" />
 
         <Button
