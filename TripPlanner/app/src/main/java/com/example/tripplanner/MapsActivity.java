@@ -45,6 +45,7 @@ public class MapsActivity extends FragmentActivity {
         LatLng secondLatLong = new LatLng(0, 0);
 
         ArrayList<TripAdvisorApi.Data> tripList = (ArrayList<TripAdvisorApi.Data>)getIntent().getSerializableExtra("tripList");
+        System.out.println("OMG COUNT = " + tripList.size());
         for (int i = 0; i < tripList.size(); ++i){
             String name = tripList.get(i).name;
             double longitude = tripList.get(i).longitude;
@@ -53,7 +54,8 @@ public class MapsActivity extends FragmentActivity {
                 firstLatLong = new LatLng(latitude, longitude);
             if (i == 1)
                 secondLatLong = new LatLng(latitude, longitude);
-            addMarkerToMap(firstLatLong, name);
+            LatLng goodLatLong = new LatLng(latitude, longitude);
+            addMarkerToMap(goodLatLong, name);
         }
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
