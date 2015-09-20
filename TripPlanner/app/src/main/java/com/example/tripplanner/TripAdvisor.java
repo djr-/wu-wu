@@ -11,4 +11,9 @@ public interface TripAdvisor {
             @Path("location") String location,
             @Query("key") String apiKey
     );
+    @GET("location/{location_id}/attractions")
+    Call<TripAdvisorApi.SearchResults> searchAttractions(
+            @Path("location_id") String location_id,
+            @Query("key") String apiKey
+    );
 }

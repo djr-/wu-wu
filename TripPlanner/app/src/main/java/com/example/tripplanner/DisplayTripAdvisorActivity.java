@@ -28,6 +28,11 @@ public class DisplayTripAdvisorActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_trip_advisor);
+        mainListView = (ListView) findViewById(R.id.main_listview);
+        mArrayAdapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1,
+                mNameList);
+        mainListView.setAdapter(mArrayAdapter);
         Intent intent = getIntent();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -36,18 +41,22 @@ public class DisplayTripAdvisorActivity extends Activity {
                 .build();
 
         TripAdvisor tripAdvisor = retrofit.create(TripAdvisor.class);
-        intent.getStringExtra("id");
+        String city = intent.getStringExtra("city");
         String API_KEY = getResources().getString(R.string.TripAdvisorKey);
-        Call<TripAdvisorApi.SearchResults> call = tripAdvisor.searchGeos("San%20Francisco", API_KEY);
+        Call<TripAdvisorApi.SearchResults> call = tripAdvisor.searchGeos(city, API_KEY);
         mainTextView = (TextView) findViewById(R.id.text_test);
         call.enqueue(new Callback<TripAdvisorApi.SearchResults>() {
             @Override
             public void onResponse(Response<TripAdvisorApi.SearchResults> response) {
                 TripAdvisorApi.SearchResults searchResults = response.body();
-                id = searchResults.geos.get(0).location_id;
-                System.out.println("OMG ID = " + id);
-                System.out.println(searchResults.geos.get(0).location_string);
-                mainTextView.setText("OurPlace = " + id);
+                for(int i = 0; i < searchResults.geos.size(); ++i){
+                    id = searchResults.geos.get(i).location_id;
+                    System.out.println("OMG ID = " + id);
+                    System.out.println(searchResults.geos.get(i).location_string);
+                    mainTextView.setText("OurPlace = " + id);
+                    mNameList.add(id);
+                    mArrayAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
