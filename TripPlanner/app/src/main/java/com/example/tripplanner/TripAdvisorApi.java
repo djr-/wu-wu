@@ -1,5 +1,6 @@
 package com.example.tripplanner;
 
+import java.io.Serializable;
 import java.util.List;
 
 public final class TripAdvisorApi {
@@ -25,7 +26,7 @@ public final class TripAdvisorApi {
     }
 
 
-    public static class Data {
+    public static class Data implements Serializable {
         public final String name;
         public final int location_id;
         public final double latitude;
