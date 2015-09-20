@@ -9,6 +9,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,20 @@ public class MapsActivity extends FragmentActivity {
         return stringWithoutParens;
     }
 
+    private void drawPathBetweenPoints(LatLng point1, LatLng point2) {
+        if (mMap == null)
+            return;
+
+        PolylineOptions options = new PolylineOptions();
+
+        options.visible( true );
+        options.width( 10 );
+        options.add(point1);
+        options.add(point2);
+
+        mMap.addPolyline(options);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,10 +67,17 @@ public class MapsActivity extends FragmentActivity {
             double latitude = tripList.get(i).latitude;
             if (i == 0)
                 firstLatLong = new LatLng(latitude, longitude);
-            if (i == 1)
-                secondLatLong = new LatLng(latitude, longitude);
+//            if (i == 1)
+//                secondLatLong = new LatLng(latitude, longitude);
             LatLng goodLatLong = new LatLng(latitude, longitude);
             addMarkerToMap(goodLatLong, name);
+        }
+
+        for (int i = 1; i < tripList.size(); ++i) {
+            LatLng previousPoint = new LatLng(tripList.get(i-1).latitude, tripList.get(i-1).longitude);
+            LatLng currentPoint = new LatLng(tripList.get(i).latitude, tripList.get(i).longitude);
+
+            drawPathBetweenPoints(previousPoint, currentPoint);
         }
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
@@ -63,7 +85,6 @@ public class MapsActivity extends FragmentActivity {
                 .zoom(11)                   // Sets the zoom
                 .build();                   // Creates a CameraPosition from the builder
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GoogleDistanceMatrixApi.API_URL)
