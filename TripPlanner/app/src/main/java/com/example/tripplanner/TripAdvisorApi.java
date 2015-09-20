@@ -9,10 +9,12 @@ public final class TripAdvisorApi {
     public static class Geo {
         public final String location_string;
         public int location_id;
+        public final String name;
 
-        public Geo(String location_string, int location_id) {
+        public Geo(String location_string, int location_id, String name) {
             this.location_string = location_string;
             this.location_id = location_id;
+            this.name = name;
         }
     }
 

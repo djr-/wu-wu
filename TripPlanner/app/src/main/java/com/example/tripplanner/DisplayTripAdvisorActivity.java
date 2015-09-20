@@ -59,12 +59,15 @@ public class DisplayTripAdvisorActivity extends Activity {
         String city = intent.getStringExtra("city");
         API_KEY = getResources().getString(R.string.TripAdvisorKey);
         Call<TripAdvisorApi.SearchResults> call = tripAdvisor.searchGeos(city, API_KEY);
-        mainTextView = (TextView) findViewById(R.id.text_test);
         call.enqueue(new Callback<TripAdvisorApi.SearchResults>() {
             @Override
             public void onResponse(Response<TripAdvisorApi.SearchResults> response) {
                 TripAdvisorApi.SearchResults searchResults = response.body();
+                if (getActionBar()!=null){
+                    getActionBar().setTitle(searchResults.geos.get(0).name);
+                }
                 for(int i = 0; i < 1; ++i) {
+
                     id = searchResults.geos.get(i).location_id;
                     System.out.println("OMG ID = " + id);
                     System.out.println(searchResults.geos.get(i).location_string);
