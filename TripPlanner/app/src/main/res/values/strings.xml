@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">TripPlanner</string>
+    <string name="app_name">Day Planner</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="city_button">Enter</string>
+    <string name="city_button">Let\'s Go!</string>
     <string name="title_activity_display_trip_advisor">Things To Do</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_my_list2">MyListActivity2</string>
+    <string name="home_prompt">Where do you want to go today?</string>
 </resources>
