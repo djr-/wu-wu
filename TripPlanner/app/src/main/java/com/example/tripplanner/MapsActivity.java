@@ -18,6 +18,12 @@ public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
+    private void addMarkerToMap(LatLng latLng, String markerName) {
+        mMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .title(markerName));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
