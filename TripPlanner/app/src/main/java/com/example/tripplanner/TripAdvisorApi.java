@@ -2,7 +2,7 @@ package com.example.tripplanner;
 
 import java.util.List;
 
-public final class Api {
+public final class TripAdvisorApi {
     public static final String API_URL = "http://api.tripadvisor.com/api/partner/2.0/";
 
     public static class Geo {

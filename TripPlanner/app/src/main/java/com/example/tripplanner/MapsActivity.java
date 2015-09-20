@@ -17,6 +17,8 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+
+        //String DISTANCE_MATRIX_API_KEY = getResources().getString(R.string.google_distance_matrix_key);
     }
 
     @Override

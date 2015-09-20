@@ -31,19 +31,19 @@ public class DisplayTripAdvisorActivity extends Activity {
         Intent intent = getIntent();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Api.API_URL)
+                .baseUrl(TripAdvisorApi.API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         TripAdvisor tripAdvisor = retrofit.create(TripAdvisor.class);
         intent.getStringExtra("id");
         String API_KEY = getResources().getString(R.string.TripAdvisorKey);
-        Call<Api.SearchResults> call = tripAdvisor.searchGeos("San%20Francisco", API_KEY);
+        Call<TripAdvisorApi.SearchResults> call = tripAdvisor.searchGeos("San%20Francisco", API_KEY);
         mainTextView = (TextView) findViewById(R.id.text_test);
-        call.enqueue(new Callback<Api.SearchResults>() {
+        call.enqueue(new Callback<TripAdvisorApi.SearchResults>() {
             @Override
-            public void onResponse(Response<Api.SearchResults> response) {
-                Api.SearchResults searchResults = response.body();
+            public void onResponse(Response<TripAdvisorApi.SearchResults> response) {
+                TripAdvisorApi.SearchResults searchResults = response.body();
                 id = searchResults.geos.get(0).location_id;
                 System.out.println("OMG ID = " + id);
                 System.out.println(searchResults.geos.get(0).location_string);
