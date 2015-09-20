@@ -2,6 +2,7 @@ package com.example.tripplanner;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,36 +23,40 @@ import retrofit.Retrofit;
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-    double totalTime;
+    int totalTime;
+    ArrayList<String> stringCoords = new ArrayList<String>();
+    private Toast _toast;
     private void addMarkerToMap(LatLng latLng, String markerName) {
         mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title(markerName));
     }
     public double calculateTime(String coord1, String coord2){
-        Call<GoogleDistanceMatrixApi.Result> call = distanceMatrix.computeTimeBetween("38.63983,-90.29417", "39.63983,-90.29417", DISTANCE_MATRIX_API_KEY);
-
-        call.enqueue(new Callback<GoogleDistanceMatrixApi.Result>() {
-            @Override
-            public void onResponse(Response<GoogleDistanceMatrixApi.Result> response) {
-                GoogleDistanceMatrixApi.Result result = response.body();
-                System.out.println(result.status);
-                System.out.println(result.origin_addresses);
-                System.out.println(result.destination_addresses);
-                System.out.println(result.rows.get(0).elements.get(0).status);
-                System.out.println(result.rows.get(0).elements.get(0).duration.text);
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-                t.printStackTrace();
-            }
-        });
+//        Call<GoogleDistanceMatrixApi.Result> call = distanceMatrix.computeTimeBetween("38.63983,-90.29417", "39.63983,-90.29417", DISTANCE_MATRIX_API_KEY);
+//
+//        call.enqueue(new Callback<GoogleDistanceMatrixApi.Result>() {
+//            @Override
+//            public void onResponse(Response<GoogleDistanceMatrixApi.Result> response) {
+//                GoogleDistanceMatrixApi.Result result = response.body();
+//                System.out.println(result.status);
+//                System.out.println(result.origin_addresses);
+//                System.out.println(result.destination_addresses);
+//                System.out.println(result.rows.get(0).elements.get(0).status);
+//                System.out.println(result.rows.get(0).elements.get(0).duration.text);
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable t) {
+//                t.printStackTrace();
+//            }
+//        });
+        return 0;
     }
     private String trimParens(String stringWithParens) {
         String stringWithoutParens;
         stringWithoutParens = stringWithParens.replace("(", "");
         stringWithoutParens = stringWithoutParens.replace(")", "");
+        stringWithoutParens = stringWithoutParens.replace("lat/lng: ", "");
         return stringWithoutParens;
     }
 
@@ -61,8 +66,8 @@ public class MapsActivity extends FragmentActivity {
 
         PolylineOptions options = new PolylineOptions();
 
-        options.visible( true );
-        options.width( 10 );
+        options.visible(true);
+        options.width(10);
         options.add(point1);
         options.add(point2);
 
@@ -74,15 +79,15 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
-        String test = "(FUN, TIMES)";
-        test = trimParens(test);
-        System.out.println("OMGTEST"+test+"HOORAY");
+
+        _toast = Toast.makeText(this, "", Toast.LENGTH_LONG);
+
         LatLng firstLatLong = new LatLng(0, 0);
         LatLng secondLatLong = new LatLng(0, 0);
 
-        ArrayList<TripAdvisorApi.Data> tripList = (ArrayList<TripAdvisorApi.Data>)getIntent().getSerializableExtra("tripList");
+        ArrayList<TripAdvisorApi.Data> tripList = (ArrayList<TripAdvisorApi.Data>) getIntent().getSerializableExtra("tripList");
         System.out.println("OMG COUNT = " + tripList.size());
-        for (int i = 0; i < tripList.size(); ++i){
+        for (int i = 0; i < tripList.size(); ++i) {
             String name = tripList.get(i).name;
             double longitude = tripList.get(i).longitude;
             double latitude = tripList.get(i).latitude;
@@ -95,9 +100,11 @@ public class MapsActivity extends FragmentActivity {
         }
 
         for (int i = 1; i < tripList.size(); ++i) {
-            LatLng previousPoint = new LatLng(tripList.get(i-1).latitude, tripList.get(i-1).longitude);
+            LatLng previousPoint = new LatLng(tripList.get(i - 1).latitude, tripList.get(i - 1).longitude);
             LatLng currentPoint = new LatLng(tripList.get(i).latitude, tripList.get(i).longitude);
-
+            String point = currentPoint.toString();
+            point = trimParens(point);
+            stringCoords.add(point);
             drawPathBetweenPoints(previousPoint, currentPoint);
         }
 
@@ -115,12 +122,42 @@ public class MapsActivity extends FragmentActivity {
         GoogleDistanceMatrix distanceMatrix = retrofit.create(GoogleDistanceMatrix.class);
         String DISTANCE_MATRIX_API_KEY = getResources().getString(R.string.google_distance_matrix_key);
 
-        String firstTrimmedLatLong = trimParens(firstLatLong.toString());
-        String secondTrimmedLatLong = trimParens(secondLatLong.toString());
+
+        for (int i = 1; i < stringCoords.size(); ++i) {
+            System.out.println("OMG"+stringCoords.get(i)+"OMG");
+            Call<GoogleDistanceMatrixApi.Result> call = distanceMatrix.computeTimeBetween(stringCoords.get(i), stringCoords.get(i-1), DISTANCE_MATRIX_API_KEY);
 
 
+
+            call.enqueue(new Callback<GoogleDistanceMatrixApi.Result>() {
+                @Override
+                public void onResponse(Response<GoogleDistanceMatrixApi.Result> response) {
+                    GoogleDistanceMatrixApi.Result result = response.body();
+                    System.out.println(result.status);
+                    System.out.println(result.origin_addresses);
+                    System.out.println(result.destination_addresses);
+                    System.out.println(result.rows.get(0).elements.get(0).status);
+                    System.out.println(result.rows.get(0).elements.get(0).duration.text);
+                    totalTime = totalTime + result.rows.get(0).elements.get(0).duration.value;
+                    final int MINUTES_IN_AN_HOUR = 60;
+                    final int SECONDS_IN_A_MINUTE = 60;
+
+                    int seconds = totalTime % SECONDS_IN_A_MINUTE;
+                    int totalMinutes = totalTime / SECONDS_IN_A_MINUTE;
+                    int minutes = totalMinutes % MINUTES_IN_AN_HOUR;
+                    int hours = totalMinutes / MINUTES_IN_AN_HOUR;
+                    String output = "Total travel time: " + hours + " hours, " + minutes + " minutes";
+                    _toast.setText(output);
+                    _toast.show();
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
     }
-
     @Override
     protected void onResume() {
         super.onResume();
