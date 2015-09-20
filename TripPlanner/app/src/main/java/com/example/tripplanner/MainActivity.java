@@ -93,4 +93,10 @@ public class MainActivity extends Activity {
         cityString = query.toString().toLowerCase().replace("+","%20");
         return cityString;
     }
+
+    public void listTest(View view){
+
+        Intent intent = new Intent(this, MyListActivity.class);
+        startActivity(intent);
+    }
 }

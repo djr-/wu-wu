@@ -8,17 +8,37 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DisplayTripAdvisorActivity extends Activity {
+
+    String[] values = new String[] { "Android", "iPhone", "WindowsMobile",
+            "Blackberry", "WebOS", "Ubuntu", "Windows7", "Max OS X",
+            "Linux", "OS/2" };
+
+
+
     ListView mainListView;
     ArrayAdapter mArrayAdapter;
-    ArrayList mNameList = new ArrayList();
+    ArrayList mNameList = new ArrayList(Arrays.asList(values));
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_trip_advisor);
+
+        // 4. Access the ListView
+        mainListView = (ListView) findViewById(R.id.main_listview);
+
+        // Create an ArrayAdapter for the ListView
+        mArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, mNameList);
+
+        // Set the ListView to use the ArrayAdapter
+        mainListView.setAdapter(mArrayAdapter);
+        mArrayAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -42,4 +62,6 @@ public class DisplayTripAdvisorActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
