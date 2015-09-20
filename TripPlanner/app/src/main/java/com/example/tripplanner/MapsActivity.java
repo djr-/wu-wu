@@ -2,6 +2,7 @@ package com.example.tripplanner;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,6 +23,7 @@ import retrofit.Retrofit;
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private Toast _toast;
 
     private void addMarkerToMap(LatLng latLng, String markerName) {
         mMap.addMarker(new MarkerOptions()
@@ -42,8 +44,8 @@ public class MapsActivity extends FragmentActivity {
 
         PolylineOptions options = new PolylineOptions();
 
-        options.visible( true );
-        options.width( 10 );
+        options.visible(true);
+        options.width(10);
         options.add(point1);
         options.add(point2);
 
@@ -55,6 +57,8 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+
+        _toast = Toast.makeText(this, "", Toast.LENGTH_LONG);
 
         LatLng firstLatLong = new LatLng(0, 0);
         LatLng secondLatLong = new LatLng(0, 0);
@@ -98,6 +102,9 @@ public class MapsActivity extends FragmentActivity {
         String secondTrimmedLatLong = trimParens(secondLatLong.toString());
 
         Call<GoogleDistanceMatrixApi.Result> call = distanceMatrix.computeTimeBetween("38.63983,-90.29417", "39.63983,-90.29417", DISTANCE_MATRIX_API_KEY);
+
+        _toast.setText("Total travel time: 30m");
+        _toast.show();
 
         call.enqueue(new Callback<GoogleDistanceMatrixApi.Result>() {
             @Override
