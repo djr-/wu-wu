@@ -65,7 +65,6 @@ public class DisplayTripAdvisorActivity extends Activity {
                     id = searchResults.geos.get(i).location_id;
                     System.out.println("OMG ID = " + id);
                     System.out.println(searchResults.geos.get(i).location_string);
-                    mainTextView.setText("OurPlace = " + id);
                     subcategory = "other";
                     Call<TripAdvisorApi.SearchAttractionResults> call2 = tripAdvisor.searchAttractions(Integer.toString(id), subcategory, API_KEY);
                     call2.enqueue(new Callback<TripAdvisorApi.SearchAttractionResults>() {
