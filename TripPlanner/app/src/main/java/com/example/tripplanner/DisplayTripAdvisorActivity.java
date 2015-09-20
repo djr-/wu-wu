@@ -23,6 +23,11 @@ public class DisplayTripAdvisorActivity extends Activity {
     ArrayList mNameList = new ArrayList();
     TextView mainTextView;
     int id;
+    Retrofit retrofit;
+    TripAdvisor tripAdvisor;
+    String API_KEY;
+    String name;
+    String subcategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,29 +40,50 @@ public class DisplayTripAdvisorActivity extends Activity {
         mainListView.setAdapter(mArrayAdapter);
         Intent intent = getIntent();
 
-        Retrofit retrofit = new Retrofit.Builder()
+        retrofit = new Retrofit.Builder()
                 .baseUrl(TripAdvisorApi.API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        TripAdvisor tripAdvisor = retrofit.create(TripAdvisor.class);
+        tripAdvisor = retrofit.create(TripAdvisor.class);
         String city = intent.getStringExtra("city");
-        String API_KEY = getResources().getString(R.string.TripAdvisorKey);
+        API_KEY = getResources().getString(R.string.TripAdvisorKey);
         Call<TripAdvisorApi.SearchResults> call = tripAdvisor.searchGeos(city, API_KEY);
         mainTextView = (TextView) findViewById(R.id.text_test);
         call.enqueue(new Callback<TripAdvisorApi.SearchResults>() {
             @Override
             public void onResponse(Response<TripAdvisorApi.SearchResults> response) {
                 TripAdvisorApi.SearchResults searchResults = response.body();
-                for(int i = 0; i < searchResults.geos.size(); ++i){
+                for(int i = 0; i < 1; ++i) {
                     id = searchResults.geos.get(i).location_id;
                     System.out.println("OMG ID = " + id);
                     System.out.println(searchResults.geos.get(i).location_string);
                     mainTextView.setText("OurPlace = " + id);
-                    mNameList.add(id);
-                    mArrayAdapter.notifyDataSetChanged();
+                    subcategory = "other";
+                    Call<TripAdvisorApi.SearchAttractionResults> call2 = tripAdvisor.searchAttractions(Integer.toString(id), subcategory, API_KEY);
+                    call2.enqueue(new Callback<TripAdvisorApi.SearchAttractionResults>() {
+                        @Override
+                        public void onResponse(Response<TripAdvisorApi.SearchAttractionResults> response) {
+                            TripAdvisorApi.SearchAttractionResults secondSearchResults = response.body();
+                            for (int j = 0; j < secondSearchResults.data.size(); ++j) {
+                                TripAdvisorApi.Data attraction = secondSearchResults.data.get(j);
+                                mNameList.add(attraction);
+                                mArrayAdapter.notifyDataSetChanged();
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(Throwable t) {
+
+                        }
+
+
+                    });
                 }
-            }
+
+
+                    }
 
             @Override
             public void onFailure(Throwable t) {
@@ -68,6 +94,7 @@ public class DisplayTripAdvisorActivity extends Activity {
 
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
