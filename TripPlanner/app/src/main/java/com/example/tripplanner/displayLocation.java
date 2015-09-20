@@ -16,7 +16,7 @@ public class displayLocation {
             }
 
         public Integer locID()      { return locID; }
-        public String name()        { return name; }
+        public String  name()       { return name; }
         public Boolean selected()   { return selected;}
 
 }

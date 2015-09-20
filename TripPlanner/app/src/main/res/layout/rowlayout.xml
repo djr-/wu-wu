@@ -3,17 +3,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginLeft="4px"
-        android:layout_marginRight="10px"
-        android:layout_marginTop="4px"
-        android:src="@drawable/qm3" >
-        android:gravity="center_vertical"
-    </ImageView>
-
     <TextView
         android:id="@+id/label"
         android:layout_width="wrap_content"
@@ -21,5 +10,20 @@
         android:text="@+id/label"
         android:textSize="25dp" >
     </TextView>
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="4px"
+        android:layout_marginRight="10px"
+        android:layout_marginTop="4px"
+        android:gravity="center_vertical"
+        android:layout_gravity="right"
+        android:src="@drawable/qm3" >
+
+    </ImageView>
+
+
 
 </LinearLayout> 
