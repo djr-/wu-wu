@@ -31,7 +31,7 @@ public final class TripAdvisorApi {
         public final double latitude;
         public final double longitude;
         public final double rating;
-        public final boolean selected;
+        public boolean selected;
         public String toString(){
             return this.name;
         }

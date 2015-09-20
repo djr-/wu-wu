@@ -2,9 +2,12 @@ package com.example.tripplanner;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -106,6 +109,22 @@ public class DisplayTripAdvisorActivity extends Activity {
         // Set the ListView to use the ArrayAdapter
         mainListView.setAdapter(mArrayAdapter);
         mArrayAdapter.notifyDataSetChanged();
+        mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                TripAdvisorApi.Data object = (TripAdvisorApi.Data) mNameList.get(position);
+                System.out.println("OMG" + object.name + object.location_id + object.selected);
+                if (object.selected){
+                    view.setBackgroundColor(Color.WHITE);
+                    object.selected = false;
+                }
+                else {
+                    view.setBackgroundColor(Color.GREEN);
+                    object.selected = true;
+                }
+            }
+        });
     }
 
 
