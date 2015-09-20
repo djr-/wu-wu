@@ -150,5 +150,19 @@ public class DisplayTripAdvisorActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void sendActivities(View view){
+        // Create a REST adapter which points to our API
+        ArrayList<TripAdvisorApi.Data> tripList = new ArrayList();
+        for(int i = 0; i < mNameList.size(); ++i){
+            TripAdvisorApi.Data activity = (TripAdvisorApi.Data) mNameList.get(i);
+            if(activity.selected){
+                tripList.add(activity);
+            }
+        }
+        Intent intent = new Intent(this, MapsActivity.class);
+        //intent.putExtra("tripList", tripList);
+        startActivity(intent);
 
+
+    }
 }
