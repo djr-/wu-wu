@@ -7,7 +7,7 @@ import retrofit.http.Query;
 
 public interface TripAdvisor {
     @GET("search/{location}")
-    Call<Api.SearchResults> searchGeos(
+    Call<TripAdvisorApi.SearchResults> searchGeos(
             @Path("location") String location,
             @Query("key") String apiKey
     );

@@ -1,12 +1,18 @@
 package com.example.tripplanner;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class MapsActivity extends FragmentActivity {
 
@@ -17,6 +23,32 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(GoogleDistanceMatrixApi.API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        GoogleDistanceMatrix distanceMatrix = retrofit.create(GoogleDistanceMatrix.class);
+        String DISTANCE_MATRIX_API_KEY = getResources().getString(R.string.google_distance_matrix_key);
+        Call<GoogleDistanceMatrixApi.Result> call = distanceMatrix.computeTimeBetween("Seattle", "Dallas", DISTANCE_MATRIX_API_KEY);
+
+        call.enqueue(new Callback<GoogleDistanceMatrixApi.Result>() {
+            @Override
+            public void onResponse(Response<GoogleDistanceMatrixApi.Result> response) {
+                GoogleDistanceMatrixApi.Result result = response.body();
+                System.out.println(result.status);
+                System.out.println(result.origin_addresses);
+                System.out.println(result.destination_addresses);
+                System.out.println(result.rows.get(0).elements.get(0).status);
+                System.out.println(result.rows.get(0).elements.get(0).duration.text);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     @Override
