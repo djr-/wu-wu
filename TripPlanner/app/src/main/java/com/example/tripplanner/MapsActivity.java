@@ -3,8 +3,10 @@ package com.example.tripplanner;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -26,19 +28,39 @@ public class MapsActivity extends FragmentActivity {
                 .title(markerName));
     }
 
+    private String trimParens(String stringWithParens) {
+        String stringWithoutParens;
+        stringWithoutParens = stringWithParens.replace("(", "");
+        stringWithoutParens = stringWithParens.replace(")", "");
+        return stringWithoutParens;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
 
+        LatLng firstLatLong = new LatLng(0, 0);
+        LatLng secondLatLong = new LatLng(0, 0);
+
         ArrayList<TripAdvisorApi.Data> tripList = (ArrayList<TripAdvisorApi.Data>)getIntent().getSerializableExtra("tripList");
         for (int i = 0; i < tripList.size(); ++i){
             String name = tripList.get(i).name;
             double longitude = tripList.get(i).longitude;
             double latitude = tripList.get(i).latitude;
-            addMarkerToMap(new LatLng(latitude,longitude), name);
+            if (i == 0)
+                firstLatLong = new LatLng(latitude, longitude);
+            if (i == 1)
+                secondLatLong = new LatLng(latitude, longitude);
+            addMarkerToMap(firstLatLong, name);
         }
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(firstLatLong)      // Sets the center of the map to Mountain View
+                .zoom(11)                   // Sets the zoom
+                .build();                   // Creates a CameraPosition from the builder
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -48,7 +70,11 @@ public class MapsActivity extends FragmentActivity {
 
         GoogleDistanceMatrix distanceMatrix = retrofit.create(GoogleDistanceMatrix.class);
         String DISTANCE_MATRIX_API_KEY = getResources().getString(R.string.google_distance_matrix_key);
-        Call<GoogleDistanceMatrixApi.Result> call = distanceMatrix.computeTimeBetween("Seattle", "Dallas", DISTANCE_MATRIX_API_KEY);
+
+        String firstTrimmedLatLong = trimParens(firstLatLong.toString());
+        String secondTrimmedLatLong = trimParens(secondLatLong.toString());
+
+        Call<GoogleDistanceMatrixApi.Result> call = distanceMatrix.computeTimeBetween("38.63983,-90.29417", "39.63983,-90.29417", DISTANCE_MATRIX_API_KEY);
 
         call.enqueue(new Callback<GoogleDistanceMatrixApi.Result>() {
             @Override
@@ -109,6 +135,6 @@ public class MapsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        //mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
 }
